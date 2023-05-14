@@ -23,7 +23,7 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
-    await client.connect();
+    // await client.connect();
 
     const serverCollection = client.db('mrenData').collection('Project');
     const bookingCollection = client.db('carBook').collection('booking');
@@ -47,7 +47,6 @@ async function run() {
       let query = {};
       if (req.query?.email) {
         query = {email: req.query.email}
-        console.log(query);
       }
       const result = await bookingCollection.find(query).toArray();
       res.send(result);
@@ -58,6 +57,20 @@ async function run() {
       const result = await bookingCollection.insertOne(newBooking)
       res.send(result);
     });
+
+    app.patch('/bookings/:id', async(req, res)=>{
+      const id = req.params.id;
+      const filter = {_id: new ObjectId(id)}
+      const updatedBooking = req.body;
+      console.log(updatedBooking);
+      const updateDoc ={
+        $set:{
+          status: updatedBooking.status
+        },
+      };
+      const result = await bookingCollection.updateOne(filter, updateDoc)
+      res.send(result);
+    })
 
     app.delete('/bookings/:id', async(req, res) => {
       const id = req.params.id;
