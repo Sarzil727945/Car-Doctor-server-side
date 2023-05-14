@@ -25,7 +25,8 @@ async function run() {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
 
-    const serverCollection = client.db('mrenData').collection('Project')
+    const serverCollection = client.db('mrenData').collection('Project');
+    const bookingCollection = client.db('carBook').collection('booking');
 
     app.get('/server', async(req, res)=>{
       const cursor = serverCollection.find();
@@ -40,6 +41,32 @@ async function run() {
       res.send(result)
     })
 
+
+    // bookings data server
+    app.get('/bookings', async(req, res)=>{
+      let query = {};
+      if (req.query?.email) {
+        query = {email: req.query.email}
+        console.log(query);
+      }
+      const result = await bookingCollection.find(query).toArray();
+      res.send(result);
+    })
+    
+    app.post('/bookings', async(req, res) => {
+      const newBooking = req.body;
+      const result = await bookingCollection.insertOne(newBooking)
+      res.send(result);
+    });
+
+    app.delete('/bookings/:id', async(req, res) => {
+      const id = req.params.id;
+      const query = {_id: new ObjectId(id)}
+      const result = await bookingCollection.deleteOne(query);
+      res.send(result);
+    })
+
+    
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
