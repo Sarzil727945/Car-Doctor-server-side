@@ -25,7 +25,7 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
-    await client.connect();
+    // await client.connect();
 
     // server link start
     const serverCollection = client.db('mrenData').collection('Project');
@@ -33,15 +33,15 @@ async function run() {
     // server link end 
 
 
-    // // jwt localhost start
-    //   app.post('/jwt', (req, res)=>{
-    //     const user = req.body;
-    //     console.log(user);
-    //     const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {
-    //       expiresIn:'1h'});
-    //     res.send({token});
-    //   })
-    // // jwt localhost end
+    // jwt localhost start
+      app.post('/jwt', (req, res)=>{
+        const user = req.body;
+        console.log(user);
+        const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {
+          expiresIn:'2h'});
+        res.send({token});
+      })
+    // jwt localhost end
 
 
     app.get('/server', async(req, res)=>{
