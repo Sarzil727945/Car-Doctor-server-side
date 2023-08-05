@@ -45,8 +45,8 @@ async function run() {
     // await client.connect();
 
     // server link start
-    const serverCollection = client.db('mrenData').collection('Project');
-    const bookingCollection = client.db('carBook').collection('booking');
+    const serverCollection = client.db('carDoctor').collection('allCar');
+    const bookingCollection = client.db('carDoctor').collection('carBooking');
     // server link end 
 
 
@@ -143,7 +143,7 @@ run().catch(console.dir);
 
 
 app.get('/', (req, res)=>{
-     res.send('mren-project server running')
+     res.send('Car Doctor server running')
 })
 
 app.listen(port, ()=>{
