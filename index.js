@@ -61,6 +61,12 @@ async function run() {
     // jwt localhost end
 
 
+    app.post('/server', async(req, res) => {
+      const newBooking = req.body;
+      const result = await serverCollection.insertOne(newBooking)
+      res.send(result);
+    });
+
     app.get('/server', async(req, res)=>{
       const cursor = serverCollection.find();
       const result = await cursor.toArray();
